@@ -14,16 +14,16 @@ except ImportError:
 class HR(SelfClosingTagNode):
     """
     Inserts a horizontal rule.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][hr /][/code]
-    
+
     Note: This tag has no closing tag!
     """
     verbose_name = 'Horizontal Rule'
-    open_pattern = re.compile(patterns.self_closing_tag % 'hr')
-    
+    open_pattern = re.compile(patterns.self_closing_tag % 'hr', re.IGNORECASE)
+
     def parse(self):
         return '<hr />'
 
@@ -31,78 +31,79 @@ class HR(SelfClosingTagNode):
 class P(ReplaceTagNode):
     """
     Creates a paragraph.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][p]Text[/p][/code]
     """
     verbose_name = 'Paragraph'
-    open_pattern = re.compile(patterns.no_argument % 'p')
-    close_pattern = re.compile(patterns.closing % 'p')
-    
-    
+    open_pattern = re.compile(patterns.no_argument % 'p', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'p', re.IGNORECASE)
+
+
 class Title(ReplaceTagNode):
     """
     Creates a title.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][title]Text[/title][/code]
     """
     tagname = 'h1'
     verbose_name = 'Title'
-    open_pattern = re.compile(patterns.no_argument % 'title')
-    close_pattern = re.compile(patterns.closing % 'title')
-    
+    open_pattern = re.compile(patterns.no_argument % 'title', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'title', re.IGNORECASE)
+
+
 class Subtitle(ReplaceTagNode):
     """
     Creates a subtitle.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][subtitle]Text[/subtitle][/code]
     """
     tagname = 'h2'
     verbose_name = 'Subtitle'
-    open_pattern = re.compile(patterns.no_argument % 'subtitle')
-    close_pattern = re.compile(patterns.closing % 'subtitle')
-    
-    
+    open_pattern = re.compile(patterns.no_argument % 'subtitle', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'subtitle', re.IGNORECASE)
+
+
 class H(ArgumentTagNode):
     """
     Create a heading.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][hX]Text[/hX][/code]
-    
+
     Allowed values for [i]X[/i]: 1,2,3,4,5,6
     """
     verbose_name = 'Heading'
-    open_pattern = re.compile(r'\[h(?P<argument>[1-6])\]')
-    close_pattern = re.compile(r'\[/h[1-6]\]')
-    
+    open_pattern = re.compile(r'\[h(?P<argument>[1-6])\]', re.IGNORECASE)
+    close_pattern = re.compile(r'\[/h[1-6]\]', re.IGNORECASE)
+
     def parse(self):
         return '<h%s>%s</h%s>' % (self.argument, self.parse_inner(), self.argument)
-    
-    
+
+
 class Heading(ArgumentTagNode):
     """
     Turns a text into a heading
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][heading=<size>]Text[/heading][/code]
-    
+
     Arguments:
-    
+
     Allowed values for [i]size[/i]: big, medium, small
     """
     vebose_name = 'Simple Heading'
-    open_pattern = re.compile(patterns.single_argument % 'heading')
-    close_pattern = re.compile(patterns.closing % 'heading')
+    open_pattern = re.compile(patterns.single_argument % 'heading', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'heading', re.IGNORECASE)
     _aliases = {'small':'5', 'medium':'4', 'big':'3'}
-    
+
     def parse(self):
         if not self.argument:
             self.argument = 'medium'
@@ -112,64 +113,63 @@ class Heading(ArgumentTagNode):
             return self.parse_inner()
         size = self._aliases[arg]
         return '<h%s>%s</h%s>' % (size, self.parse_inner(), size)
-        
 
 
 class Em(ReplaceTagNode):
     """
     Makes text italic.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][i]Text[/i][/code]
     """
     verbose_name = 'Italic'
-    open_pattern = re.compile(patterns.no_argument % 'i')
-    close_pattern = re.compile(patterns.closing % 'i')
+    open_pattern = re.compile(patterns.no_argument % 'i', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'i', re.IGNORECASE)
 
 
 class Strong(ReplaceTagNode):
     """
     Makes text bold.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][b]Text[/b][/code]
     """
     verbose_name = 'Bold'
-    open_pattern = re.compile(patterns.no_argument % 'b')
-    close_pattern = re.compile(patterns.closing % 'b')
+    open_pattern = re.compile(patterns.no_argument % 'b', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'b', re.IGNORECASE)
 
 
 class U(ReplaceTagNode):
     """
     Underlines text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][u]Text[/u][/code]
     """
     verbose_name = 'Underline'
-    open_pattern = re.compile(patterns.no_argument % 'u')
-    close_pattern = re.compile(patterns.closing % 'u')
-        
-        
+    open_pattern = re.compile(patterns.no_argument % 'u', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'u', re.IGNORECASE)
+
+
 class Size(ArgumentTagNode):
     """
     Changes the size of text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][size=<size>]Text[/size][/code]
-    
+
     Arguments:
-    
+
     Allowed values for [i]size[/i]: tiny, small, normal, big, huge
     """
-    _allowed = ('tiny','small','normal','big','huge')
-    open_pattern = re.compile(patterns.single_argument % 'size')
-    close_pattern = re.compile(patterns.closing % 'size')
-    
+    _allowed = ('tiny', 'small', 'normal', 'big', 'huge')
+    open_pattern = re.compile(patterns.single_argument % 'size', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'size', re.IGNORECASE)
+
     def parse(self):
         if not self.argument:
             return self.parse_inner()
@@ -178,16 +178,16 @@ class Size(ArgumentTagNode):
             soft_raise("Size '%s' not allowed." % arg)
             return self.parse_inner()
         return '<span class="%s">%s</span>' % (arg, self.parse_inner())
-    
-    
+
+
 class Color(ArgumentTagNode):
     """
     Changes the color of text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][color=<color>]Text[/color][/code]
-    
+
     Allowed values for [i]color[/i]: Any name from http://www.w3schools.com/HTML/html_colornames.asp or any hex color value.
     """
     _color_names = {'aliceblue': 'f0f8ff',
@@ -330,9 +330,9 @@ class Color(ArgumentTagNode):
                     'yellow': 'ffff00',
                     'yellowgreen': '9acd32'}
     _hex = re.compile('#?(?P<hexcode>[0-9a-f]{6}|[0-9a-f]{3})')
-    open_pattern = re.compile(patterns.single_argument % 'color')
-    close_pattern = re.compile(patterns.closing % 'color')
-    
+    open_pattern = re.compile(patterns.single_argument % 'color', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'color', re.IGNORECASE)
+
     def parse(self):
         if not self.argument:
             return self.parse_inner()
@@ -347,34 +347,34 @@ class Color(ArgumentTagNode):
             else:
                 hex = '#' + match.groupdict()['hexcode']
         return '<span style="color: %s;">%s</span>' % (hex, self.parse_inner())
-        
-    
+
+
 class Indent(TagNode):
     """
     Indents text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][indent]Text[/indent][/code]
     """
-    open_pattern = re.compile(patterns.no_argument % 'indent')
-    close_pattern = re.compile(patterns.closing % 'indent')
-    
+    open_pattern = re.compile(patterns.no_argument % 'indent', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'indent', re.IGNORECASE)
+
     def parse(self):
         return '<div class="indent">%s</div>' % self.parse_inner()
-        
-    
+
+
 class Outdent(TagNode):
     """
     Outdents text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][outdent]Text[/outdent][/code]
     """
-    open_pattern = re.compile(patterns.no_argument % 'outdent')
-    close_pattern = re.compile(patterns.closing % 'outdent')
-    
+    open_pattern = re.compile(patterns.no_argument % 'outdent', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'outdent', re.IGNORECASE)
+
     def parse(self):
         return '<div class="outdent">%s</div>' % self.parse_inner()
 
@@ -382,14 +382,14 @@ class Outdent(TagNode):
 class Quote(TagNode):
     """
     Defines a quote.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][quote]Text[/quote][/code]
     """
-    open_pattern = re.compile(patterns.no_argument % 'quote')
-    close_pattern = re.compile(patterns.closing % 'quote')
-    
+    open_pattern = re.compile(patterns.no_argument % 'quote', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'quote', re.IGNORECASE)
+
     def parse(self):
         return '<blockquote>%s</blockquote>' % self.parse_inner()
 
@@ -397,19 +397,19 @@ class Quote(TagNode):
 class Text(ArgumentTagNode):
     """
     Aligns text.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][text=<align>]Text[/text][/code]
-    
+
     Arguments:
-    
+
     Allowed values for [i]align[/i]: left, right, justify. Default: left
     """
-    open_pattern = re.compile(patterns.single_argument % 'text')
-    close_pattern = re.compile(patterns.closing % 'text')
-    _allowed = ('left','right','justify', 'center')
-    
+    open_pattern = re.compile(patterns.single_argument % 'text', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'text', re.IGNORECASE)
+    _allowed = ('left', 'right', 'justify', 'center')
+
     def parse(self):
         if not self.argument:
             return self.parse_inner()
@@ -425,29 +425,29 @@ class Text(ArgumentTagNode):
 class Code(TagNode):
     """
     Defines text as code (with highlighting).
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][code lang=bbdocs linenos=0]Your Code[/code]
 [code=language]Your Code[/code]
 [code lang=language linenos=1 hl_line=5]Your Code[/code][/code]
-    
+
     Arguments:
-    
+
     Allowed [i]languages[/i]: http://pygments.org/languages/ Default: autodetect
     [i]linenos[/i]: switch to display line numbers or not (Allowed values: 1,0. Default: 1)
     [i]hl_line[/i]: line to highlight, default: 0 (=none)
-    """ 
-    open_pattern = re.compile(r'\[code\]|\[code=(?P<argument>[^\]]+)\]|\[code( (\w+)=("[^\]"]+"|[^\] ]+))?( (\w+)=("[^\]"]+"|[^\] ]+))?( (\w+)=("[^\]"]+"|[^\] ]+))?\]')
-    close_pattern = re.compile(patterns.closing % 'code')
-    
+    """
+    open_pattern = re.compile(r'\[code\]|\[code=(?P<argument>[^\]]+)\]|\[code( (\w+)=("[^\]"]+"|[^\] ]+))?( (\w+)=("[^\]"]+"|[^\] ]+))?( (\w+)=("[^\]"]+"|[^\] ]+))?\]', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'code', re.IGNORECASE)
+
     _arguments = {'lang': '',
                   'linenos': '1',
-                  'hl_line': '0',}
-    
+                  'hl_line': '0', }
+
     def __init__(self, parent, match, content, context):
         TagNode.__init__(self, parent, match, content, context)
-        
+
         gd = match.groupdict()
         args = match.groups()[1:]
         kwargs = dict(self._arguments)
@@ -459,11 +459,11 @@ class Code(TagNode):
         if 'argument' in gd and gd['argument']:
             kwargs['lang'] = gd['argument']
         self.arguments = kwargs
-    
+
     def parse(self):
         """
         pygment highlighting
-        """ 
+        """
         inner = ''
         for node in self.nodes:
             inner += node.raw_content
@@ -493,23 +493,22 @@ class Code(TagNode):
                                   hl_lines=hl_lines)
         hilighted = highlight(inner, lexer, formatter)
         return hilighted
-    
-    
+
+
 class Strike(TagNode):
     """
     Strikes text throgh.
-    
+
     Usage:
-    
+
     [code lang=bbdocs linenos=0][strike]Text[/strike][/code]
     """
-    open_pattern = re.compile(patterns.no_argument % 'strike')
-    close_pattern = re.compile(patterns.closing % 'strike')
+    open_pattern = re.compile(patterns.no_argument % 'strike', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'strike', re.IGNORECASE)
     verbose_name = 'Strike Through'
-    
+
     def parse(self):
         return '<span style="text-decoration:line-through;">%s</span>' % self.parse_inner()
-    
 
 
 register(Em)
