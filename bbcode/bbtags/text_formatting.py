@@ -511,6 +511,21 @@ class Strike(TagNode):
         return '<span style="text-decoration:line-through;">%s</span>' % self.parse_inner()
 
 
+class Center(TagNode):
+    """
+    Makes text align center.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][center]Text[/center][/code]
+    """
+    verbose_name = 'Center'
+    open_pattern = re.compile(patterns.no_argument % 'center', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'center', re.IGNORECASE)
+
+    def parse(self):
+        return '<p style="text-align:center;">%s</p>' % self.parse_inner()
+
 register(Em)
 register(Strong)
 register(P)
@@ -528,3 +543,4 @@ register(Title)
 register(Subtitle)
 register(Heading)
 register(Strike)
+register(Center)

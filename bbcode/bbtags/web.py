@@ -130,7 +130,7 @@ class Youtube(TagNode):
         url = ''
         for node in self.nodes:
             if node.is_text_node or isinstance(node, AutoDetectURL):
-                inner += node.raw_content
+                url += node.raw_content
             else:
                 soft_raise("Youtube tag cannot have nested tags")
                 return self.raw_content
@@ -161,8 +161,43 @@ class AutoDetectURL(SelfClosingTagNode):
         return '<a href="%s">%s</a>' % (url, url)
 
 
+class Dailymotion(TagNode):
+    """
+    Includes a dailymotion video. Post the Id to the dailymotion video inside the tag.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][dailymotion]xtg9f[/dailymotion][/code]
+    """
+    verbose_name = 'Dailymotion'
+    _video_id_pattern = re.compile('([a-z0-9]+)')
+    open_pattern = re.compile(patterns.no_argument % 'dailymotion', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'dailymotion', re.IGNORECASE)
+
+    def parse(self):
+        url = ''
+        for node in self.nodes:
+            if node.is_text_node or isinstance(node, AutoDetectURL):
+                url += node.raw_content
+            else:
+                soft_raise("Dailymotion tag cannot have nested tags")
+                return self.raw_content
+        match = self._video_id_pattern.search(url)
+        if not match:
+            soft_raise("'%s' does not seem like a dailymotion id" % url)
+            return self.raw_content
+        videoid = match.groups()
+        if not videoid:
+            soft_raise("'%s' does not seem like a dailymotion id" % url)
+            return self.raw_content
+        videoid = videoid[0]
+        return (
+            '<iframe frameborder="0" width="480" height="360" src="http://www.dailymotion.com/embed/video/%s"></iframe>' % videoid
+        )
+
 register(Url)
 register(Img)
 register(Email)
 register(Youtube)
+register(Dailymotion)
 register(AutoDetectURL)
