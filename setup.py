@@ -6,7 +6,7 @@ with open(path.join(path.dirname(__file__), 'README')) as f:
 
 setup(
     name="django-bbcode",
-    version='1.0.0',
+    version='1.0.2',
     description="Little helper application to parse and render bbcode",
     long_description=readme,
     url="https://github.com/camilleb/django-bbcode",
