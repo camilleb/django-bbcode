@@ -4,6 +4,10 @@ from bbcode import *
 from bbcode import settings
 
 
+from django.conf import settings as django_settings
+from django.db.models import get_model
+
+
 class Smilies(SelfClosingTagNode):
     open_pattern = re.compile(':(?P<name>[a-zA-Z-]+):')
 
@@ -12,6 +16,15 @@ class Smilies(SelfClosingTagNode):
         url = '%s%s.gif' % (settings.SMILEY_MEDIA_URL, name)
         if smilie_exists(url):
             return '<img src="%s" alt="%s" />' % (url, name)
+        if django_settings.BBCODE_SMILIE_MODEL and django_settings.BBCODE_SMILIE_MODEL_URL_FIELD and django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD:
+            try:
+                model = get_model(*django_settings.BBCODE_SMILIE_MODEL.split('.'))
+                smilie_obj = model.objects.get(**{django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD: ':%s:' % name})
+                url = getattr(smilie_obj, django_settings.BBCODE_SMILIE_MODEL_URL_FIELD, False)
+                if url:
+                    return '<img src="%s" alt="%s" />' % (url, name)
+            except:
+                pass
         return ':%s:' % name
 
 
