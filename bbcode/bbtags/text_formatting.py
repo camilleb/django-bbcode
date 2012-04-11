@@ -551,7 +551,7 @@ class Right(TagNode):
 
     [code lang=bbdocs linenos=0][right]Text[/right][/code]
     """
-    verbose_name = 'Center'
+    verbose_name = 'Right'
     open_pattern = re.compile(patterns.no_argument % 'right', re.IGNORECASE)
     close_pattern = re.compile(patterns.closing % 'right', re.IGNORECASE)
 
@@ -575,4 +575,6 @@ register(Title)
 register(Subtitle)
 register(Heading)
 register(Strike)
+register(Left)
 register(Center)
+register(Right)
