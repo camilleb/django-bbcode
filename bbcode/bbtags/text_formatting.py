@@ -511,6 +511,22 @@ class Strike(TagNode):
         return '<span style="text-decoration:line-through;">%s</span>' % self.parse_inner()
 
 
+class Left(TagNode):
+    """
+    Makes text align left.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][left]Text[/left][/code]
+    """
+    verbose_name = 'Left'
+    open_pattern = re.compile(patterns.no_argument % 'left', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'left', re.IGNORECASE)
+
+    def parse(self):
+        return '<p style="text-align:left;">%s</p>' % self.parse_inner()
+
+
 class Center(TagNode):
     """
     Makes text align center.
@@ -525,6 +541,22 @@ class Center(TagNode):
 
     def parse(self):
         return '<p style="text-align:center;">%s</p>' % self.parse_inner()
+
+
+class Right(TagNode):
+    """
+    Makes text align right.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][right]Text[/right][/code]
+    """
+    verbose_name = 'Center'
+    open_pattern = re.compile(patterns.no_argument % 'right', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'right', re.IGNORECASE)
+
+    def parse(self):
+        return '<p style="text-align:right;">%s</p>' % self.parse_inner()
 
 register(Em)
 register(Strong)
