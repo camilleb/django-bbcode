@@ -13,9 +13,6 @@ class Smilies(SelfClosingTagNode):
 
     def parse(self):
         name = self.match.groupdict()['name']
-        url = '%s%s.gif' % (settings.SMILEY_MEDIA_URL, name)
-        if smilie_exists(url):
-            return '<img src="%s" alt="%s" />' % (url, name)
         if django_settings.BBCODE_SMILIE_MODEL and django_settings.BBCODE_SMILIE_MODEL_URL_FIELD and django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD:
             try:
                 model = get_model(*django_settings.BBCODE_SMILIE_MODEL.split('.'))
@@ -25,6 +22,9 @@ class Smilies(SelfClosingTagNode):
                     return '<img src="%s" alt="%s" />' % (url, name)
             except:
                 pass
+        url = '%s%s.gif' % (settings.SMILEY_MEDIA_URL, name)
+        if smilie_exists(url):
+            return '<img src="%s" alt="%s" />' % (url, name)
         return ':%s:' % name
 
 
