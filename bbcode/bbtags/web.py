@@ -145,7 +145,7 @@ class Youtube(TagNode):
             return self.raw_content
         videoid = videoid[0]
         return (
-            '<iframe width="560" height="315" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>' % videoid
+            '<iframe width="100%" height="315" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>' % videoid
         )
 
 
@@ -188,7 +188,7 @@ class Dailymotion(TagNode):
             return self.raw_content
         videoid = videoid[0]
         return (
-            '<iframe frameborder="0" width="480" height="360" src="http://www.dailymotion.com/embed/video/%s"></iframe>' % videoid
+            '<iframe frameborder="0" width="100%" height="360" src="http://www.dailymotion.com/embed/video/%s"></iframe>' % videoid
         )
 
 register(Url)
