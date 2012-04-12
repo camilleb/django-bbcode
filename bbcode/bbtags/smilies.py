@@ -13,19 +13,24 @@ class Smilies(SelfClosingTagNode):
 
     def parse(self):
         name = self.match.groupdict()['name']
-        if django_settings.BBCODE_SMILIE_MODEL and django_settings.BBCODE_SMILIE_MODEL_URL_FIELD and django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD:
-            try:
-                model = get_model(*django_settings.BBCODE_SMILIE_MODEL.split('.'))
-                smilie_obj = model.objects.get(**{django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD: ':%s:' % name})
-                url = getattr(smilie_obj, django_settings.BBCODE_SMILIE_MODEL_URL_FIELD, False)
-                if url:
-                    return '<img src="%s" alt="%s" />' % (url, name)
-            except:
-                pass
+        url = get_url_with_model(':%s:' % name)
+        if url:
+            return '<img src="%s" alt="%s" />' % (url, name)
         url = '%s%s.gif' % (settings.SMILEY_MEDIA_URL, name)
         if smilie_exists(url):
             return '<img src="%s" alt="%s" />' % (url, name)
         return ':%s:' % name
+
+
+def get_url_with_model(name):
+    if django_settings.BBCODE_SMILIE_MODEL and django_settings.BBCODE_SMILIE_MODEL_URL_FIELD and django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD:
+        try:
+            model = get_model(*django_settings.BBCODE_SMILIE_MODEL.split('.'))
+            smilie_obj = model.objects.get(**{django_settings.BBCODE_SMILIE_MODEL_TEXT_FIELD: name})
+            return getattr(smilie_obj, django_settings.BBCODE_SMILIE_MODEL_URL_FIELD, False)
+        except:
+            pass
+    return False
 
 
 def smilie_exists(url):
@@ -44,6 +49,9 @@ class AlternativeSmilie(SelfClosingTagNode):
 
     def parse(self):
         alias = self.match.group()
+        url = get_url_with_model(self.raw_content)
+        if url:
+            return '<img src="%s" alt="%s" />' % (url, self.raw_content)
         url = '%s%s.gif' % (settings.SMILEY_MEDIA_URL, self.alias)
         if smilie_exists(url):
             return '<img src="%s" alt="%s" />' % (url, alias)
@@ -100,6 +108,11 @@ class Neutral(AlternativeSmilie):
     open_pattern = re.compile('(:-?\|)')
 
 
+class Classy(AlternativeSmilie):
+    # 8)
+    open_pattern = re.compile('(8\))')
+
+
 register(Smilies)
 register(LOL)
 register(Smilie)
@@ -111,3 +124,4 @@ register(Crying)
 register(Yell)
 register(Grin)
 register(Neutral)
+register(Classy)
