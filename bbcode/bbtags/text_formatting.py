@@ -558,6 +558,59 @@ class Right(TagNode):
     def parse(self):
         return '<p style="text-align:right;">%s</p>' % self.parse_inner()
 
+
+class Font(ArgumentTagNode):
+    """
+    Add special font to the text.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][font=<font>]Text[/font]
+
+    Arguments:
+
+    Allowed values for [i]font[/i]: Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Sans-serif, Serif, Times New Roman, Trebuchet MS, Verdana
+    """
+    _allowed = ('Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Georgia', 'Impact', 'Sans-serif', 'Serif', 'Times New Roman', 'Trebuchet MS', 'Verdana')
+    verbose_name = 'Font'
+    open_pattern = re.compile(patterns.single_argument % 'font', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'font', re.IGNORECASE)
+
+    def parse(self):
+        if not self.argument:
+            return self.parse_inner()
+        arg = self.argument
+        if not arg in self._allowed:
+            soft_raise("Font '%s' not allowed." % arg)
+            return self.parse_inner()
+        return '<span style="font-family:%s">%s</span>' % (arg, self.parse_inner())
+
+
+class IntSize(ArgumentTagNode):
+    """
+    Changes the size of text.
+
+    Usage:
+
+    [code lang=bbdocs linenos=0][size=<size>]Text[/size][/code]
+
+    Arguments:
+
+    Allowed values for [i]size[/i]: 1, 2, 3, 4, 5, 6, 7
+    """
+    _allowed = ('1', '2', '3', '4', '5', '6', '7')
+    open_pattern = re.compile(patterns.single_argument % 'size', re.IGNORECASE)
+    close_pattern = re.compile(patterns.closing % 'size', re.IGNORECASE)
+
+    def parse(self):
+        if not self.argument:
+            return self.parse_inner()
+        arg = self.argument.lower()
+        if not arg in self._allowed:
+            soft_raise("Size '%s' not allowed." % arg)
+            return self.parse_inner()
+        return '<font size="%s">%s</font>' % (arg, self.parse_inner())
+
 register(Em)
 register(Strong)
 register(P)
@@ -578,3 +631,5 @@ register(Strike)
 register(Left)
 register(Center)
 register(Right)
+register(Font)
+# register(IntSize)

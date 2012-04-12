@@ -120,9 +120,10 @@ class Youtube(TagNode):
 
     Usage:
 
-    [code lang=bbdocs linenos=0][youtube]http://www.youtube.com/watch?v=FjPf6B8EVJI[/youtube][/code]
+    [code lang=bbdocs linenos=0][youtube]FjPf6B8EVJI[/youtube][/code]
     """
-    _video_id_pattern = re.compile('v=(\w+)')
+    verbose_name = 'Youtube'
+    _video_id_pattern = re.compile('([a-zA-Z0-9]+)')
     open_pattern = re.compile(patterns.no_argument % 'youtube', re.IGNORECASE)
     close_pattern = re.compile(patterns.closing % 'youtube', re.IGNORECASE)
 
@@ -144,12 +145,7 @@ class Youtube(TagNode):
             return self.raw_content
         videoid = videoid[0]
         return (
-            '<object width="560" height="340"><param name="movie" value="http:/'
-            '/www.youtube.com/v/%s&amp;hl=en&amp;fs=1&amp;"></param><param name'
-            '="allowFullScreen" value="true"></param><param name="allowscriptac'
-            'cess" value="always"></param><embed src="http://www.youtube.com/v/'
-            '%s&amp;hl=en&amp;fs=1&amp;" type="application/x-shockwave-flash" a'
-            'llowscriptaccess="always" allowfullscreen="true" width="560" heigh'
+            '<iframe width="560" height="315" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>' % videoid
         )
 
 
@@ -170,7 +166,7 @@ class Dailymotion(TagNode):
     [code lang=bbdocs linenos=0][dailymotion]xtg9f[/dailymotion][/code]
     """
     verbose_name = 'Dailymotion'
-    _video_id_pattern = re.compile('([a-z0-9]+)')
+    _video_id_pattern = re.compile('([a-zA-Z0-9]+)')
     open_pattern = re.compile(patterns.no_argument % 'dailymotion', re.IGNORECASE)
     close_pattern = re.compile(patterns.closing % 'dailymotion', re.IGNORECASE)
 
