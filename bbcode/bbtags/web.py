@@ -48,7 +48,7 @@ class Url(TagNode):
         else:
             href = urllib.quote(raw_href)
         css = self.variables.resolve(css)
-        return '<a href="%s"%s>%s</a>' % (href, css, inner)
+        return '<a href="%s"%s target="_blank">%s</a>' % (href, css, inner)
 
 
 class Email(TagNode):
