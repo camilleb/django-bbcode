@@ -1,7 +1,7 @@
 from bbcode import *
 import re
 import urllib
-
+from django.utils.http import urlquote
 
 class Url(TagNode):
     """
@@ -44,11 +44,11 @@ class Url(TagNode):
             css = ''
         raw_href = self.variables.resolve(href)
         if raw_href.startswith('http://'):
-            href = raw_href[:7] + urllib.quote(raw_href[7:])
+            href = raw_href[:7] + urlquote(raw_href[7:])
         else:
-            href = urllib.quote(raw_href)
+            href = urlquote(raw_href)
         css = self.variables.resolve(css)
-        return '<a href="%s"%s target="_blank">%s</a>' % (href, css, inner)
+        return u'<a href="%s"%s target="_blank">%s</a>' % (href, css, inner)
 
 
 class Email(TagNode):
