@@ -419,7 +419,7 @@ class Text(ArgumentTagNode):
         if not argument in self._allowed:
             soft_raise("Text alignment '%s' not allowed." % argument)
             return self.parse_inner()
-        return '<p style="text-align:%s;">%s</p>' % (argument, self.parse_inner())
+        return '<div style="text-align:%s;">%s</div>' % (argument, self.parse_inner())
 
 
 class Code(TagNode):
@@ -524,7 +524,7 @@ class Left(TagNode):
     close_pattern = re.compile(patterns.closing % 'left', re.IGNORECASE)
 
     def parse(self):
-        return '<p style="text-align:left;">%s</p>' % self.parse_inner()
+        return '<div style="text-align:left;">%s</div>' % self.parse_inner()
 
 
 class Center(TagNode):
@@ -540,7 +540,7 @@ class Center(TagNode):
     close_pattern = re.compile(patterns.closing % 'center', re.IGNORECASE)
 
     def parse(self):
-        return '<p style="text-align:center;">%s</p>' % self.parse_inner()
+        return '<div style="text-align:center;">%s</div>' % self.parse_inner()
 
 
 class Right(TagNode):
@@ -556,7 +556,7 @@ class Right(TagNode):
     close_pattern = re.compile(patterns.closing % 'right', re.IGNORECASE)
 
     def parse(self):
-        return '<p style="text-align:right;">%s</p>' % self.parse_inner()
+        return '<div style="text-align:right;">%s</div>' % self.parse_inner()
 
 
 class Font(ArgumentTagNode):

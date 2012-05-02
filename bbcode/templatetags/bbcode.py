@@ -48,7 +48,7 @@ class BBCodeNode(template.Node):
 @register.filter(name='bbcode')
 def bbcode_filter(content):
     parsed, errors = bbmodule.parse(content, 
-            strict=True, auto_discover=True)
+            strict=False, auto_discover=True)
     return mark_safe(parsed)
 
 @register.tag
