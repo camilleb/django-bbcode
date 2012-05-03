@@ -216,7 +216,7 @@ class Node(object):
         """
         Pulls all text nodes and returns the parent
         """
-        self.parent.nodes.append(TextNode(self.fullcontent[self.start:end]))
+        self.parent.nodes.append(TextNode(self, self.fullcontent[self.start:end]))
         return self.parent
     
     def close(self, end):
