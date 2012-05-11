@@ -580,9 +580,9 @@ class Font(ArgumentTagNode):
         if not self.argument:
             return self.parse_inner()
         arg = self.argument
-        if not arg in self._allowed:
-            soft_raise("Font '%s' not allowed." % arg)
-            return self.parse_inner()
+        # if not arg in self._allowed:
+        #     soft_raise("Font '%s' not allowed." % arg)
+        #     return self.parse_inner()
         return '<span style="font-family:%s">%s</span>' % (arg, self.parse_inner())
 
 
