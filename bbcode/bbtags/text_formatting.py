@@ -166,7 +166,8 @@ class Size(ArgumentTagNode):
 
     Allowed values for [i]size[/i]: tiny, small, normal, big, huge
     """
-    _allowed = ('tiny', 'small', 'normal', 'big', 'huge')
+    _allowed = ('tiny', 'small', 'normal', 'big', 'huge', )
+    _allowed_numeric = ('1', '2', '3', '4', '5', '6', '7', )
     open_pattern = re.compile(patterns.single_argument % 'size', re.IGNORECASE)
     close_pattern = re.compile(patterns.closing % 'size', re.IGNORECASE)
 
@@ -174,7 +175,7 @@ class Size(ArgumentTagNode):
         if not self.argument:
             return self.parse_inner()
         arg = self.argument.lower()
-        if not arg in self._allowed:
+        if not arg in self._allowed or not arg in self._allowed_numeric:
             soft_raise("Size '%s' not allowed." % arg)
             return self.parse_inner()
         return '<span class="%s">%s</span>' % (arg, self.parse_inner())
