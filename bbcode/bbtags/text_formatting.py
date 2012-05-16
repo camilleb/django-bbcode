@@ -175,7 +175,7 @@ class Size(ArgumentTagNode):
         if not self.argument:
             return self.parse_inner()
         arg = self.argument.lower()
-        if not arg in self._allowed or not arg in self._allowed_numeric:
+        if not arg in self._allowed and not arg in self._allowed_numeric:
             soft_raise("Size '%s' not allowed." % arg)
             return self.parse_inner()
         return '<span class="%s">%s</span>' % (arg, self.parse_inner())
